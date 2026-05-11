@@ -1,0 +1,17 @@
+@dict base 0.8
+
+ctx = context
+arch = architecture
+perf = performance
+maint = maintenance
+deps = dependencies
+pub = public
+obs = observable
+io = input output
+err = errors
+compat = compatibility
+cfg = configuration
+impl = implementation
+repo = repository
+spec = specification
+cmd = command
