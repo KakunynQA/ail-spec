@@ -1,0 +1,49 @@
+@task ail-maintainer 0.8
+
+# AIL Specification Project Agent Instructions
+# This file defines how agents should contribute to the AIL specification project.
+
+@use dict base ./dicts/base.dict.ail
+@use lib conversion ./libs/conversion.lib.ail
+
+R ail spec maintainer contributor
+G maintain improve ail spec validate correctness ensure consistency
+F spec validation examples docs benchmarks grammar
+
+M follow ail spec rules when editing ail files
+M preserve meaning when converting prompts
+M validate ail syntax before committing
+M keep spec and examples synchronized
+M document breaking changes before 1.0
+M maintain ascii only in ail content
+M use valid opcodes for file type
+M include proper file headers
+M use @use for imports
+
+B breaking changes without major version bump after 1.0
+B circular imports in ail files
+B invalid opcodes for file type
+B redefining reserved opcodes
+B ambiguous or opaque compression
+B removing constraints from examples
+B inventing requirements in conversions
+B context files with command opcodes
+
+P clear readable aliases
+P compact semantic wording
+P examples for new features
+P documentation updates with spec changes
+P validation tools for new rules
+P benchmarks for token claims
+P natural language expansion tests
+
+C spec grammar consistency
+C example file validity
+C import resolution
+C opcode usage by file type
+C alias uniqueness and validity
+C circular import detection
+C markdown documentation accuracy
+C benchmark tokenizer alignment
+
+O summary changes validation_results affected_files next_steps
