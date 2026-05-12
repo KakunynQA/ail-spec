@@ -26,6 +26,28 @@
 
 ---
 
+## Table of contents
+
+- [Why AIL](#why-ail)
+- [Core idea](#core-idea)
+- [Quick start](#quick-start)
+- [Referencing other rules](#referencing-other-rules)
+- [Design principles](#design-principles)
+- [File types](#file-types)
+- [Core opcodes](#core-opcodes)
+- [Token economy](#token-economy)
+- [Public prompt benchmark](#public-prompt-benchmark)
+- [Local fallback](#local-fallback)
+- [Copy-paste fallback](#copy-paste-fallback)
+- [Reference policy](#reference-policy)
+- [Recommended repository convention](#recommended-repository-convention)
+- [What AIL is for](#what-ail-is-for)
+- [What AIL is not for](#what-ail-is-not-for)
+- [Status](#status)
+- [License](#license)
+
+---
+
 ## Why AIL
 
 AI agents are increasingly controlled by large natural-language prompts, system prompts, `AGENTS.md` files, coding rules, architecture docs, and operational playbooks.
