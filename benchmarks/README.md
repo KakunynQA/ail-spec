@@ -4,6 +4,13 @@ This directory contains token economy benchmarks for the AIL specification.
 
 ## Automated Token Counting
 
+The benchmark script automatically:
+1. Scans all AIL samples in `../examples/benchmarks/`
+2. Fetches source prompts from the system_prompts_leaks repository
+3. Counts tokens using GPT-4 tokenizer (cl100k_base)
+4. Calculates savings percentage
+5. Generates a markdown table with results
+
 ### Prerequisites
 
 **Node.js:**
@@ -22,31 +29,27 @@ python3 tokenize.py
 
 ### Output
 
-The scripts will:
-1. Scan all AIL samples in `../examples/benchmarks/`
-2. Count tokens using GPT-4 tokenizer (cl100k_base)
-3. Extract source URLs from comments
-4. Generate a markdown table with results
+The script will output:
+- AIL token count for each sample
+- Source prompt token count (fetched from GitHub)
+- Savings percentage
+- Markdown table for documentation
+
+### Sample Output
+
+```
+Sample: claude-code-style-system-prompt
+  File: claude-code-style-system-prompt.task.ail
+  Source: https://github.com/asgeirtj/system_prompts_leaks/blob/main/Anthropic/claude-code.md
+  AIL tokens: 409
+  Source tokens: 11186
+  Savings: 96.3%
+  Source fetched: Yes
+```
 
 ## Manual Token Measurement
 
-For accurate source prompt token counts, use the official tokenizers:
-
-### GPT / OpenAI Models
-
-Visit: https://platform.openai.com/tokenizer
-
-1. Paste the source prompt text
-2. Note the token count
-3. Record the model used (e.g., GPT-4, GPT-3.5)
-
-### Claude Models
-
-Visit: https://token-calculator.net/token-calculator
-
-1. Paste the source prompt text
-2. Select the Claude model
-3. Note the token count
+For samples without source URLs or for verification, use the official tokenizers:
 
 ## Benchmark Formula
 
