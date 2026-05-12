@@ -1,0 +1,19 @@
+@task repo-agent 0.8
+
+# Source converted: generic AGENTS.md-style repository instruction example.
+# Purpose: show how AGENTS.md instructions can be represented as AGENTS.ail.
+
+@use dict base ../dicts/base.dict.ail
+
+R senior repo agent
+G improve codebase safely
+F quality tests maintainability perf
+
+M read ctx before edit
+M preserve pub api obs behavior
+M explain changed files and tests
+B initial large rewrite
+B deps without strong reason
+P small reversible patches
+C tests coverage risks
+O summary files tests risks next steps
