@@ -1,0 +1,16 @@
+{
+  "name": "ail-benchmark",
+  "version": "0.8.0",
+  "description": "Token benchmark for AIL specification",
+  "type": "module",
+  "scripts": {
+    "benchmark": "node tokenize.js",
+    "benchmark:python": "python3 tokenize.py"
+  },
+  "dependencies": {
+    "tiktoken": "^1.0.15"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
