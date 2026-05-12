@@ -1,0 +1,17 @@
+@lib go 0.8
+
+# Source purpose: reusable Go engineering rules.
+# Official raw URL: https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/go.lib.ail
+
+M use gofmt
+M run go test when logic changes
+M preserve pub api and obs behavior
+M use ctx correctly
+M handle err explicitly
+B deps without strong reason
+B large rewrite without clear gain
+P idiomatic go simple readable
+P small reversible patches
+C alloc loops locks ctx goroutines err handling package boundaries tests coverage
+X go test ./...
+X go vet ./...
