@@ -1,0 +1,91 @@
+(*
+  AIL 0.8 Draft Grammar
+  Agent Instruction Language
+
+  Created by Kakunyn, https://kakunyn.com
+
+  This grammar defines the concrete syntax for AIL 0.8 files.
+  Semantic validation rules are defined in SPEC.md.
+*)
+
+ail_file          = wsp*, header, line_end, body?;
+
+header            = task_header | lib_header | ctx_header | dict_header;
+task_header       = "@task", wsp+, name, wsp+, version;
+lib_header        = "@lib", wsp+, name, wsp+, version;
+ctx_header        = "@ctx", wsp+, name, wsp+, version;
+dict_header       = "@dict", wsp+, name, wsp+, version;
+
+body              = { line };
+line              = wsp*, ( blank | comment | use_directive | instruction | dict_entry ), line_end;
+blank             = "";
+comment           = "#", { not_line_end };
+
+use_directive     = "@use", wsp+, import_type, wsp+, alias, wsp+, uri;
+import_type       = "dict" | "lib" | "ctx";
+
+instruction       = opcode, wsp+, content;
+opcode            = "R" | "G" | "F" | "M" | "B" | "P" | "A" | "C" | "T" | "O" | "W" | "X" | "H" | "N";
+
+(* Dictionary entries are valid only in @dict files. *)
+dict_entry        = alias, wsp*, "=", wsp*, expansion;
+
+name              = name_char, { name_char };
+alias             = lower, { lower | digit | "-" };
+version           = digit, { digit }, ".", digit, { digit };
+uri               = local_uri | https_uri;
+local_uri         = path_char, { path_char };
+https_uri         = "https://", uri_char, { uri_char };
+
+content           = content_char, { content_char };
+expansion         = content_char, { content_char };
+
+name_char         = lower | digit | "-" | ".";
+path_char         = letter | digit | "." | "/" | "_" | "-";
+uri_char          = letter | digit | "." | "/" | "_" | "-" | ":" | "?" | "=" | "&" | "%" | "#";
+content_char      = not_line_end;
+not_line_end      = ? any ASCII character except CR or LF ?;
+
+letter            = upper | lower;
+upper             = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M"
+                   | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z";
+lower             = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m"
+                   | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z";
+digit             = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+wsp               = " " | "\t";
+line_end          = "\n" | "\r\n";
+
+(*
+  File-type semantic constraints:
+
+  @task:
+    may contain @use directives and opcodes R G F M B P A C T O W X H N
+    must not contain dict entries
+
+  @lib:
+    may contain @use directives and opcodes M B P A C T O W X H N
+    must not contain R or G
+    must not contain dict entries
+
+  @ctx:
+    may contain @use directives and opcodes N H only
+    must not command agents
+    must not contain dict entries
+
+  @dict:
+    may contain dict entries only
+    must not contain @use directives or opcode instructions
+
+  Import semantic constraints:
+    @use type must match imported file header type
+    @use task is invalid
+    circular imports are invalid
+    missing imports are invalid
+    duplicate aliases are invalid
+
+  Alias semantic constraints:
+    alias must be 2 to 16 characters
+    alias must be lowercase ASCII
+    alias must not equal a reserved opcode
+    alias must not redefine another active alias
+*)
