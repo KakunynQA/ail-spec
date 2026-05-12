@@ -15,6 +15,8 @@
 <p align="center">
   <a href="https://kakunyn.com">Kakunyn</a>
   ·
+  <a href="QUICKSTART.md">Quick Start</a>
+  ·
   <a href="SPEC.md">Specification</a>
   ·
   <a href="examples">Examples</a>
@@ -76,6 +78,68 @@ M preserve pub api obs behavior
 P small reversible changes
 C alloc loops locks ctx goroutine leaks
 O summary risks findings action plan patches validation commands
+```
+
+---
+
+## Quick start
+
+Use AIL with an LLM that can fetch URLs:
+
+```text
+Use the AIL conversion rules from:
+
+https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
+
+Also use the base dictionary:
+
+https://raw.githubusercontent.com/KakunynQA/ail-spec/main/dicts/base.dict.ail
+
+Convert the following prompt into valid AIL 0.8.
+
+Rules:
+- Preserve meaning.
+- Do not invent requirements.
+- Do not remove constraints.
+- Return only AIL.
+
+Prompt:
+
+[PASTE PROMPT HERE]
+```
+
+See the full guide in [`QUICKSTART.md`](QUICKSTART.md).
+
+---
+
+## Referencing other rules
+
+AIL references reusable rules, dictionaries, and context with `@use`.
+
+```text
+@use dict base ./dicts/base.dict.ail
+@use lib go ./libs/go.lib.ail
+@use ctx arch ./docs/architecture.ctx.ail
+```
+
+Remote raw HTTPS references are valid:
+
+```text
+@use lib conversion https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
+```
+
+Use raw URLs, not HTML GitHub pages.
+
+Recommended:
+
+```text
+https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
+```
+
+Not recommended:
+
+```text
+https://github.com/KakunynQA/ail-spec/blob/main/libs/conversion.lib.ail
 ```
 
 ---
@@ -149,6 +213,13 @@ AIL reduces repeated instruction overhead by removing natural-language ceremony 
 
 Exact savings depend on the tokenizer and model. AIL should be benchmarked against the target model before exact claims.
 
+Manual measurement tools:
+
+| Target | Tool |
+| --- | --- |
+| GPT / OpenAI models | https://platform.openai.com/tokenizer |
+| Claude-style estimates | https://token-calculator.net/token-calculator |
+
 ### Break-even model
 
 AIL is most valuable when instructions are reused.
@@ -200,35 +271,7 @@ These are estimates until the reference tokenizer benchmark is implemented.
 
 ---
 
-## How to use AIL with LLMs
-
-### Recommended: reference the official raw URL
-
-Use this when your AI agent or LLM tool can fetch URLs.
-
-```text
-Use the AIL conversion rules from:
-
-https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
-
-Also use the base dictionary:
-
-https://raw.githubusercontent.com/KakunynQA/ail-spec/main/dicts/base.dict.ail
-
-Convert the following prompt into valid AIL 0.8.
-
-Rules:
-- Preserve meaning.
-- Do not invent requirements.
-- Do not remove constraints.
-- Return only AIL.
-
-Prompt:
-
-[PASTE PROMPT HERE]
-```
-
-### Local fallback
+## Local fallback
 
 Use this when the agent has access to repository files.
 
@@ -242,7 +285,9 @@ Prompt:
 [PASTE PROMPT HERE]
 ```
 
-### Copy-paste fallback
+---
+
+## Copy-paste fallback
 
 Use this when the LLM cannot fetch URLs or read local files.
 
@@ -292,20 +337,6 @@ Prompt:
 ## Reference policy
 
 AIL files may reference external AIL resources using raw HTTPS URLs.
-
-Recommended:
-
-```text
-https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
-```
-
-Not recommended:
-
-```text
-https://github.com/KakunynQA/ail-spec/blob/main/libs/conversion.lib.ail
-```
-
-Raw URLs are preferred because they return plain text and are easier for agents and tools to consume.
 
 For long-lived production prompts, pin a commit SHA or version tag instead of using `main`.
 
