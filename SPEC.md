@@ -144,15 +144,21 @@ Dictionary files must not contain opcodes.
 
 Opcodes are reserved. Projects must not redefine opcodes.
 
-## 6. Imports
+## 6. Imports and references
 
 Imports use `@use`.
 
 Syntax:
 
 ```text
-@use <type> <alias> <path>
+@use <type> <alias> <uri>
 ```
+
+`<uri>` may be:
+
+- a local relative path
+- a local absolute path
+- a raw HTTPS URL returning plain text AIL
 
 Examples:
 
@@ -160,6 +166,7 @@ Examples:
 @use dict base ./dicts/base.dict.ail
 @use lib go ./libs/go.lib.ail
 @use ctx arch ./docs/architecture.ctx.ail
+@use lib conversion https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
 ```
 
 Valid import types:
@@ -171,6 +178,29 @@ ctx
 ```
 
 Task files must not import task files.
+
+Remote references should use raw text URLs, not HTML web pages.
+
+Recommended:
+
+```text
+https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
+```
+
+Not recommended:
+
+```text
+https://github.com/KakunynQA/ail-spec/blob/main/libs/conversion.lib.ail
+```
+
+Stability levels:
+
+| Reference | Use case | Stability |
+| --- | --- | --- |
+| `main` raw URL | quick adoption, latest rules | moving |
+| version tag raw URL | stable AIL version | stable |
+| commit SHA raw URL | reproducible prompts | strict |
+| local vendored file | repo-controlled agents | strict |
 
 ## 7. Import precedence
 
@@ -310,6 +340,13 @@ AIL token savings must be measured against a target tokenizer.
 Character count is not enough.
 
 Estimated savings are allowed in documentation, but exact claims require tokenizer-backed benchmarks.
+
+Suggested manual measurement tools:
+
+```text
+GPT tokenizer: https://platform.openai.com/tokenizer
+Claude token calculator: https://token-calculator.net/token-calculator
+```
 
 ## 14. Break-even
 
