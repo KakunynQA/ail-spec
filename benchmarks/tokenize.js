@@ -2,20 +2,20 @@
 
 /**
  * AIL Token Benchmark Script
- * 
+ *
  * Measures source prompt tokens vs AIL sample tokens.
- * 
+ *
  * Requirements:
  * - Node.js 18+
- * - npm install tiktoken
- * 
+ * - npm install gpt-tokenizer
+ *
  * Usage:
  *   node benchmarks/tokenize.js
- * 
+ *
  * Source: https://github.com/asgeirtj/system_prompts_leaks
  */
 
-import { Tiktoken } from 'tiktoken';
+import { encode } from 'gpt-tokenizer';
 import { readFileSync, writeFileSync, readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -23,14 +23,11 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// GPT-4 tokenizer (cl100k_base)
-const encoding = new Tiktoken('cl100k_base');
-
 /**
  * Count tokens in text using GPT tokenizer
  */
 function countTokens(text) {
-  return encoding.encode(text).length;
+  return encode(text).length;
 }
 
 /**
@@ -117,7 +114,6 @@ function runBenchmark() {
   console.log('  - GPT tokenizer: https://platform.openai.com/tokenizer');
   console.log('  - Claude calculator: https://token-calculator.net/token-calculator');
   
-  encoding.free();
 }
 
 // Run benchmark

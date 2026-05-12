@@ -8,7 +8,7 @@
     "benchmark:python": "python3 tokenize.py"
   },
   "dependencies": {
-    "tiktoken": "^1.0.15"
+    "gpt-tokenizer": "^2.1.2"
   },
   "engines": {
     "node": ">=18.0.0"
