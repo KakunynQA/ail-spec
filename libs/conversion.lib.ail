@@ -1,0 +1,36 @@
+@lib conversion 0.8
+
+# Source purpose: rules for converting natural-language prompts into AIL.
+# Official raw URL: https://raw.githubusercontent.com/KakunynQA/ail-spec/main/libs/conversion.lib.ail
+
+M convert natural instructions to valid AIL
+M preserve role goals tasks constraints outputs
+M preserve safety constraints
+M preserve public contracts and compatibility requirements
+M convert obligations to M
+M convert prohibitions to B
+M convert preferences to P
+M convert avoidances to A
+M convert checks inspections analysis points to C
+M convert work phases to T
+M convert required response sections to O
+M convert shell tool commands to X
+M mark uncertain assumptions with H
+M keep rare domain terms readable
+M use aliases only from active dict
+M use one instruction per line
+M return valid AIL only unless explanation requested
+
+B redefine opcodes
+B invent requirements
+B remove constraints
+B use opaque abbreviations
+B use hash only meaning
+B overcompress critical rules
+B merge unrelated rules
+B change user intent
+
+P compact semantic wording
+P ASCII only
+P short English terms
+P clarity over maximum compression
