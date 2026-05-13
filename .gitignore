@@ -59,4 +59,5 @@ benchmarks/node_modules/
 harness/node_modules/
 harness/.env
 harness/prompts/*.txt
+harness/prompts/*.md
 harness/results/*.json
