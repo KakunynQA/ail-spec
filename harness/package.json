@@ -1,0 +1,17 @@
+{
+  "name": "ail-behavior-harness",
+  "version": "0.1.0",
+  "description": "Behavior-equivalence harness for AIL vs prose system prompts",
+  "type": "module",
+  "scripts": {
+    "setup": "node setup.mjs",
+    "run": "node runner.mjs",
+    "report": "node report.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
