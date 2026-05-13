@@ -34,31 +34,38 @@ Exact values vary by model tokenizer, prompt formatting, hidden tool schemas, an
 **Both AIL and source prompt token counts are measured using GPT-4 tokenizer (cl100k_base).**
 **Source prompts are automatically fetched from the system_prompts_leaks repository.**
 
+### Measured Samples
+
 | Source prompt | Source path | AIL sample | Source tokens | AIL tokens | Measured savings |
 | --- | --- | --- | ---: | ---: | ---: |
 | Claude Code | `Anthropic/claude-code.md` | `examples/benchmarks/claude-code-style-system-prompt.task.ail` | 11,186 | 409 | 96.3% |
+| Claude Desktop Code | `Anthropic/claude-desktop-code.md` | `examples/benchmarks/claude-desktop-code-style-system-prompt.task.ail` | 10,730 | 247 | 97.7% |
+| Claude Design | `Anthropic/claude-design.md` | `examples/benchmarks/claude-design-style-system-prompt.task.ail` | 13,988 | 190 | 98.6% |
 | Codex GPT-5 | `OpenAI/codex/gpt-5.md` | `examples/benchmarks/codex-style-system-prompt.task.ail` | 4,434 | 289 | 93.5% |
+| Codex Plan Mode | `OpenAI/codex/plan_mode.md` | `examples/benchmarks/codex-plan-mode-style-system-prompt.task.ail` | 1,760 | 192 | 89.1% |
 | Gemini CLI | `Google/gemini-cli.md` | `examples/benchmarks/gemini-cli-style-system-prompt.task.ail` | 5,772 | 216 | 96.3% |
+| Gemini Workspace | `Google/gemini-workspace.md` | `examples/benchmarks/gemini-workspace-style-system-prompt.task.ail` | 4,371 | 181 | 95.9% |
 | Copilot CLI | `Misc/copilot-cli.md` | `examples/benchmarks/copilot-cli-style-system-prompt.task.ail` | 15,036 | 229 | 98.5% |
 | Perplexity Comet | `Perplexity/comet-browser-assistant.md` | `examples/benchmarks/perplexity-comet-browser-assistant.task.ail` | 5,077 | 226 | 95.5% |
-| Browser Assistant Family | N/A | `examples/benchmarks/browser-assistant-family.task.ail` | N/A | 209 | N/A |
-| Coding CLI Agent Family | N/A | `examples/benchmarks/coding-cli-agent-family.task.ail` | N/A | 243 | N/A |
-| General Assistant Style | N/A | `examples/benchmarks/general-assistant-style-system-prompt.task.ail` | N/A | 236 | N/A |
+| GPT-4.1 | `OpenAI/GPT-4.1.md` | `examples/benchmarks/gpt-4-1-style-system-prompt.task.ail` | 8,921 | 189 | 97.9% |
+
+### Family Samples (No Single Source)
+
+| Sample | AIL file | AIL tokens | Notes |
+| --- | --- | ---: | ---: |
+| Browser Assistant Family | `examples/benchmarks/browser-assistant-family.task.ail` | 209 | Aggregates Gemini/Claude in Chrome, Perplexity Comet |
+| Coding CLI Agent Family | `examples/benchmarks/coding-cli-agent-family.task.ail` | 243 | Aggregates Claude Code, Codex CLI, Gemini CLI, Copilot CLI |
+| General Assistant Style | `examples/benchmarks/general-assistant-style-system-prompt.task.ail` | 236 | Aggregates Meta AI, Notion AI, Grok, GPT-4.1 |
 
 ### Planned samples
 
 | Source prompt | Source path | Status |
 | --- | --- | --- |
-| Claude Desktop Code | `Anthropic/claude-desktop-code.md` | planned |
-| Claude Design | `Anthropic/claude-design.md` | planned |
 | Claude in Chrome | `Anthropic/claude-in-chrome.md` | planned |
 | Claude Sonnet raw | `Anthropic/raw/claude-sonnet-4.6-raw.md` | planned |
-| Gemini Workspace | `Google/gemini-workspace.md` | planned |
 | Gemini 3 Pro | `Google/gemini-3-pro.md` | planned |
 | Codex GPT-5.1 | `OpenAI/codex/gpt-5.1.md` | planned |
 | Codex GPT-5.2 | `OpenAI/codex/gpt-5.2.md` | planned |
-| Codex Plan Mode | `OpenAI/codex/plan_mode.md` | planned |
-| GPT-4.1 | `OpenAI/GPT-4.1.md` | planned |
 | o3 | `OpenAI/o3.md` | planned |
 | o4-mini | `OpenAI/o4-mini.md` | planned |
 | Grok personas | `xAI/grok-personas.md` | planned |
@@ -70,6 +77,15 @@ Exact values vary by model tokenizer, prompt formatting, hidden tool schemas, an
 | Meta AI | `Misc/meta-ai.md` | planned |
 | Notion AI | `Misc/notion-ai.md` | planned |
 | Proton Lumo AI | `Misc/proton-lumo-ai.md` | planned |
+
+### Summary Statistics
+
+**Measured samples:** 10
+**Average savings:** **95.7%**
+**Range:** 89.1% - 98.6%
+**Total source tokens:** 81,775
+**Total AIL tokens:** 2,459
+**Overall compression:** 97.0%
 
 ## Benchmark rule
 
