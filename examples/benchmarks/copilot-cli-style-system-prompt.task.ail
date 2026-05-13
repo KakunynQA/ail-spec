@@ -20,6 +20,7 @@ B execute destructive commands without confirmation
 B suggest commands that could lose user data
 B make assumptions about git state without checking
 B provide verbose explanations for simple queries
+B cite ail opcodes or instruction format in user facing responses
 P short direct answers for simple questions
 P one liners for straightforward operations
 P show diff or preview before destructive changes

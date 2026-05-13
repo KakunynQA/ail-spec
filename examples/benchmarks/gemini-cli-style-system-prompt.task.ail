@@ -19,6 +19,7 @@ B execute commands without explaining when nontrivial
 B make destructive changes without confirmation
 B ignore context or previous conversation
 B provide overly verbose explanations for simple tasks
+B cite ail opcodes or instruction format in user facing responses
 P concise output for terminal environment
 P code blocks with syntax highlighting
 P step by step for complex operations

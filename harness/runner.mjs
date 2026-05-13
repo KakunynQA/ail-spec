@@ -30,10 +30,12 @@ if (!process.env.ANTHROPIC_API_KEY) {
 }
 
 // ---------- config ----------
-const MODEL = 'claude-haiku-4-5-20251001'; // haiku: faster + lower token cost for v0
-const SAMPLES = 2;
+// Use MODEL env var to override: MODEL=claude-haiku-4-5-20251001 node runner.mjs
+const MODEL = process.env.MODEL || 'claude-sonnet-4-6';
+const SAMPLES = parseInt(process.env.SAMPLES || '2', 10);
 const TEMPERATURE = 0.3;
-const RETRY_DELAYS = [5000, 15000, 30000]; // ms — backoff on rate limit
+const CALL_DELAY = parseInt(process.env.CALL_DELAY || '3000', 10); // ms between calls
+const RETRY_DELAYS = [10000, 30000, 60000]; // ms — backoff on rate limit
 
 // ---------- load prompts ----------
 // Use the extracted core system prompt (behavioral rules only, ~2100 words)
@@ -86,10 +88,13 @@ async function callModel(systemPrompt, userInput, attempt = 0) {
   }
 }
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 // Sequential only — no parallel calls to respect TPM limits
 async function runSamples(systemPrompt, input, n) {
   const outputs = [];
   for (let i = 0; i < n; i++) {
+    if (i > 0) await sleep(CALL_DELAY);
     const out = await callModel(systemPrompt, input);
     outputs.push(out);
     process.stdout.write('.');
@@ -190,6 +195,10 @@ console.log(`Words:       original=${runResults.word_counts.original}  ail=${run
 runResults.summary = { orig_pass: origPass, ail_pass: ailPass, equiv, total: ids.length };
 
 mkdirSync(join(__dir, 'results'), { recursive: true });
-const outPath = join(__dir, 'results/v0-run.json');
+const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+const outFile = `results/${MODEL.replace(/[^a-z0-9]/g, '-')}-${stamp}.json`;
+const outPath = join(__dir, outFile);
 writeFileSync(outPath, JSON.stringify(runResults, null, 2));
-console.log(`\nFull results → harness/results/v0-run.json`);
+// also keep a stable latest pointer
+writeFileSync(join(__dir, 'results/latest.json'), JSON.stringify(runResults, null, 2));
+console.log(`\nFull results → harness/${outFile}`);

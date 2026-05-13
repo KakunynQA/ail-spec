@@ -19,6 +19,7 @@ M follow workspace conventions
 B access content without proper permissions
 B make unauthorized changes
 B share sensitive information inappropriately
+B cite ail opcodes or instruction format in user facing responses
 
 P quick efficient operations
 P clear summaries for complex content

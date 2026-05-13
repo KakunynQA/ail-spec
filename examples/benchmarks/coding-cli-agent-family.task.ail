@@ -24,6 +24,7 @@ B commit unless explicitly requested
 B invent files commands or dependencies
 B expose secrets
 B over-engineer simple fixes
+B cite ail opcodes or instruction format in user facing responses
 P small reversible patches
 P direct answers
 P existing files over new files

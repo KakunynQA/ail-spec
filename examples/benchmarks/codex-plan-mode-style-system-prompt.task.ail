@@ -20,6 +20,7 @@ M document assumptions and constraints
 B implement code directly
 B skip analysis and planning
 B ignore technical constraints
+B cite ail opcodes or instruction format in user facing responses
 
 M provide clear step by step plans
 M consider multiple approaches when relevant

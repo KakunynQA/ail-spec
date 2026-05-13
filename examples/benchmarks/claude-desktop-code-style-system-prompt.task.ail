@@ -23,6 +23,7 @@ B destructive actions without confirmation
 B assume test framework or scripts without checking
 B skip validation when tests exist
 B make large changes without clear justification
+B cite ail opcodes or instruction format in user facing responses
 
 P small reversible changes
 P existing tools and commands

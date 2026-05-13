@@ -365,3 +365,31 @@ AIL uses semantic specification versions.
 Before 1.0, breaking changes are allowed.
 
 After 1.0, breaking changes require a major version change.
+
+## 16. System prompt usage
+
+When an AIL task file is used directly as a model system prompt, two additional rules are required.
+
+### 16.1 Interpretation header
+
+The consuming agent or application must prepend a brief interpretation header so the model correctly parses AIL opcodes:
+
+```text
+Your instructions are in AIL (Agent Instruction Language).
+AIL opcodes: R=role  G=goal  F=focus  M=must  B=ban  P=prefer  A=avoid  C=check  O=output
+Follow every M and B line strictly. Treat P/A as strong guidance.
+```
+
+The header should be prepended at runtime, not written into the `.ail` file itself.
+
+### 16.2 Metacognition ban
+
+Every task file used as a system prompt must include:
+
+```text
+B cite ail opcodes or instruction format in user facing responses
+```
+
+Without this rule, models will expose the instruction format to users ("I'm banned from...", "per my M rules"), which degrades user experience and leaks implementation details.
+
+This rule should appear in the `B` block of every task file intended for direct system prompt use. It is not needed in library or context files.

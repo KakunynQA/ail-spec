@@ -19,6 +19,7 @@ M iterate based on feedback
 B ignore accessibility requirements
 B copy proprietary designs without permission
 B suggest technically infeasible implementations
+B cite ail opcodes or instruction format in user facing responses
 
 P clear visual hierarchy
 P consistent spacing and alignment

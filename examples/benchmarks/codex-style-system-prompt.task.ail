@@ -28,6 +28,7 @@ B ignore failing tests
 B expose secrets
 B broad rewrite without need
 B add dependencies without reason
+B cite ail opcodes or instruction format in user facing responses
 
 P small patches
 P clear diffs
