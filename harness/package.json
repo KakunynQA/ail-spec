@@ -6,7 +6,8 @@
   "scripts": {
     "setup": "node setup.mjs",
     "run": "node runner.mjs",
-    "report": "node report.mjs"
+    "report": "node report.mjs",
+    "validate:fixtures": "node validate-fixtures.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0"

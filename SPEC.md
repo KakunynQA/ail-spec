@@ -1,12 +1,12 @@
 # AIL Specification 0.8 Draft
 
-AIL, Agent Instruction Language, is a compact typed intermediate representation for AI instructions.
+AIL, Agent Instruction Language, is a compact typed source format for AI agent instructions.
 
 Created by [Kakunyn](https://kakunyn.com).
 
 ## 1. Purpose
 
-AIL exists to make agent instructions compact, explicit, reusable, validateable, and expandable.
+AIL exists to make agent instructions compact, explicit, reusable, validateable, expandable, bundleable, and behavior-testable.
 
 AIL is designed for:
 
@@ -19,6 +19,10 @@ AIL is designed for:
 - MCP tool instructions
 
 AIL is not a general-purpose programming language.
+
+AIL is not only a token-compression format. Token economy is useful, but the language is intended to support an instruction lifecycle: authoring, validation, import resolution, bundling, expansion into natural language, behavior-equivalence testing, and eventual compilation into model-specific runtime instructions.
+
+AIL 0.8 is experimental. The long-term goal is a practical standard instruction format for AI agents and agent platforms. The near-term path is evidence-first: stable harness schemas, negative controls, tokenizer-backed measurements, parser and AST, validator, multiple source-prompt behavior tests, tool-call simulation, and real project adoption examples.
 
 ## 2. Non-goals
 

@@ -4,7 +4,7 @@
 **Model:** claude-haiku-4-5-20251001  
 **Source prompt:** Claude Code core rules (2,110 words, extracted from full transcript)  
 **AIL version:** claude-code-style-system-prompt.task.ail (350 words incl. header)  
-**Compression:** 83.4%
+**Runtime AIL word reduction:** 83.4%
 
 ## Result
 
@@ -14,7 +14,7 @@
 | AIL | 5/5 | After iteration 3 |
 | Equivalent | 5/5 | Same pass/fail on every task |
 
-**Phase 1 v0 verdict: proceed.** Behavior equivalence holds at 83.4% compression on this task suite.
+**Phase 1 v0 verdict: proceed with caveats.** Behavior-equivalence under test held on this task suite, with 83.4% runtime AIL word reduction. This is early evidence, not proof of general equivalence.
 
 ## What we tested
 
@@ -80,9 +80,9 @@ The `appropriate_uncertainty` assertion initially only checked for uncertainty-s
 
 **Implication for harness v1:** Each behavioral assertion should list multiple phrasing families. The harness plan should explicitly warn against over-specific assertion patterns.
 
-### Finding 4: 83.4% compression with full equivalence on this suite
+### Finding 4: 83.4% word reduction with equivalence on this suite
 
-This is the first hard evidence for the Phase 1 go/no-go decision. On 5 tasks across 2 models (with Haiku as the test model), AIL is behavior-equivalent to the original prose at 83.4% compression.
+This is the first useful evidence for the Phase 1 go/no-go decision. On 5 tasks across 2 models (with Haiku as the test model), AIL matched the original prose pass/fail behavior at 83.4% runtime AIL word reduction.
 
 Caveats:
 - This is 5 tasks, not the full 12 planned for v1.
@@ -106,7 +106,7 @@ Caveats:
 **Date:** 2026-05-13  
 **Model:** claude-sonnet-4-6  
 **Tasks:** 12 (3 golden, 5 edge, 4 adversarial)  
-**Compression:** 83.4% (2,110 → 350 words)
+**Runtime AIL word reduction:** 83.4% (2,110 to 350 words)
 
 | Condition | Tasks passing |
 |-----------|--------------|

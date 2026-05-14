@@ -9,7 +9,7 @@
 
 <p align="center">
   <strong>Agent Instruction Language</strong><br>
-  A compact, typed intermediate representation for AI instructions.
+  A compact, typed source format for AI agent instructions.
 </p>
 
 <p align="center">
@@ -44,6 +44,7 @@
 - [Recommended repository convention](#recommended-repository-convention)
 - [What AIL is for](#what-ail-is-for)
 - [What AIL is not for](#what-ail-is-not-for)
+- [Evidence-first roadmap](#evidence-first-roadmap)
 - [Status](#status)
 - [License](#license)
 
@@ -63,7 +64,7 @@ These instructions often become:
 - ambiguous for agents
 - inconsistent across tools and teams
 
-**AIL** solves this by defining a compact typed format for agent instructions.
+**AIL** addresses this by defining a compact typed source format for agent instructions. It is meant to be authored, reviewed, validated, bundled, expanded, behavior-tested, and eventually compiled into model-specific runtime instructions.
 
 AIL was created by [Kakunyn](https://kakunyn.com).
 
@@ -331,7 +332,15 @@ Opcodes are fixed by the specification. Projects must not redefine them.
 
 ## Token economy
 
-AIL reduces repeated instruction overhead by removing natural-language ceremony while preserving operational meaning.
+AIL reduces repeated instruction overhead by removing natural-language ceremony while preserving operational meaning. Token economy is one benefit, not the whole project.
+
+AIL is intended to support:
+
+- validation
+- bundling
+- expansion into natural language
+- behavior-equivalence testing
+- eventual compilation into model-specific agent instructions
 
 | Input type | Natural language | AIL | Estimated savings |
 | --- | ---: | ---: | ---: |
@@ -386,7 +395,7 @@ benchmarks/system-prompt-leaks.md
 examples/benchmarks/
 ```
 
-Initial representative results:
+Initial representative estimates:
 
 | Prompt family | Source style | Estimated original | AIL sample | Estimated savings |
 | --- | --- | ---: | ---: | ---: |
@@ -396,7 +405,7 @@ Initial representative results:
 | Copilot CLI-style agent | command assistant prompt | 2k-5k | 400-800 | 60%-84% |
 | Grok-style assistant | general assistant prompt | 3k-8k | 500-900 | 70%-88% |
 
-These are estimates until the reference tokenizer benchmark is implemented.
+These are estimates until a tokenizer-backed benchmark is run for the target model. The behavior harness reports word reduction unless token counts are explicitly measured inside that run.
 
 ---
 
@@ -518,6 +527,8 @@ AIL is designed for:
 - prompt libraries
 - MCP tool instructions
 - reusable agent behavior
+- source-controlled instruction bundles
+- behavior-tested agent runtime prompts
 
 ## What AIL is not for
 
@@ -532,11 +543,28 @@ AIL is not ideal for:
 
 ---
 
+## Evidence-first roadmap
+
+AIL is experimental. The long-term goal is a practical standard instruction format for AI agents and agent platforms, but the near-term path is evidence-first:
+
+1. Stable harness result schema.
+2. Negative controls for behavior assertions.
+3. Token counting inside the behavior harness.
+4. Parser and AST.
+5. Validator.
+6. Second source prompt behavior test.
+7. Tool-call simulation.
+8. Real project adoption examples.
+
+The current harness is v0. It tests behavior-equivalence on selected text outputs and includes early negative controls, but it does not yet prove real tool-use behavior or general model/runtime compatibility.
+
+---
+
 ## Status
 
 AIL 0.8 is a draft.
 
-The current priority is specification correctness, strict boundaries, and validation rules.
+The current priority is specification correctness, strict boundaries, validation rules, and behavior-equivalence evidence.
 
 Breaking changes are expected before 1.0.
 

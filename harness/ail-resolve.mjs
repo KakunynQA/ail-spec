@@ -27,24 +27,38 @@ function applyAliases(text, aliases) {
   return result;
 }
 
-export function resolveAil(ailFilePath) {
+export function resolveAilWithMetadata(ailFilePath) {
   const dir = dirname(resolve(ailFilePath));
   const raw = readFileSync(ailFilePath, 'utf8');
 
   const lines = raw.split('\n');
   const dictAliases = {};
   const contentLines = [];
+  const resolvedImports = [];
 
   for (const line of lines) {
     const useMatch = line.match(/^@use\s+dict\s+\S+\s+(\S+)/);
     if (useMatch) {
       const dictPath = resolve(dir, useMatch[1]);
       Object.assign(dictAliases, loadDict(dictPath));
+      resolvedImports.push({
+        type: 'dict',
+        path: useMatch[1],
+        resolved_path: dictPath,
+      });
     } else {
       contentLines.push(line);
     }
   }
 
   const content = contentLines.join('\n');
-  return applyAliases(content, dictAliases);
+  return {
+    raw,
+    resolved: applyAliases(content, dictAliases),
+    resolved_imports: resolvedImports,
+  };
+}
+
+export function resolveAil(ailFilePath) {
+  return resolveAilWithMetadata(ailFilePath).resolved;
 }

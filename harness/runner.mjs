@@ -5,14 +5,16 @@
  *   A) Original prose system prompt (core rules section only)
  *   B) AIL system prompt (with minimal spec header)
  *
- * Scores Tier 1 mechanical assertions and writes results/v0-run.json.
+ * Scores Tier 1 mechanical assertions and writes results/latest.json plus a
+ * timestamped result file.
  */
 
 import Anthropic from '@anthropic-ai/sdk';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { resolveAil } from './ail-resolve.mjs';
+import { resolveAilWithMetadata } from './ail-resolve.mjs';
+import { scoreAssertions, taskPasses, wordCount } from './assertions.mjs';
 
 const __dir = dirname(fileURLToPath(import.meta.url));
 
@@ -51,7 +53,7 @@ if (!existsSync(promptPath)) {
 const originalPrompt = readFileSync(promptPath, 'utf8');
 
 const ailPath = resolve(__dir, '../examples/benchmarks/claude-code-style-system-prompt.task.ail');
-const resolvedAil = resolveAil(ailPath);
+const resolvedAil = resolveAilWithMetadata(ailPath);
 
 // Minimal AIL interpretation header (~40 tokens, cacheable across all projects)
 const AIL_HEADER = `You are an AI agent. Your instructions below are in AIL (Agent Instruction Language).
@@ -59,7 +61,7 @@ AIL opcodes: R=role  G=goal  F=focus  M=must(mandatory)  B=ban(forbidden)  P=pre
 Follow every M and B line strictly. Treat P/A as strong guidance.
 
 `;
-const ailPrompt = AIL_HEADER + resolvedAil;
+const ailPrompt = AIL_HEADER + resolvedAil.resolved;
 
 // ---------- load tasks ----------
 const tasks = JSON.parse(readFileSync(join(__dir, 'tasks/claude-code.json'), 'utf8'));
@@ -102,31 +104,6 @@ async function runSamples(systemPrompt, input, n) {
   return outputs;
 }
 
-// ---------- scorer ----------
-function scoreAssertions(outputs, assertions) {
-  return assertions.map(a => {
-    const perSample = outputs.map(output => {
-      const lower = output.toLowerCase();
-      switch (a.type) {
-        case 'max_words':
-          return output.split(/\s+/).length <= a.value;
-        case 'contains_none':
-          return !a.patterns.some(p => lower.includes(p.toLowerCase()));
-        case 'contains_any':
-          return a.patterns.some(p => lower.includes(p.toLowerCase()));
-        default:
-          return null;
-      }
-    });
-    const passRate = perSample.filter(Boolean).length / perSample.length;
-    return { label: a.label, type: a.type, pass_rate: passRate, per_sample: perSample };
-  });
-}
-
-function taskPasses(scores) {
-  return scores.every(s => s.pass_rate >= 0.5);
-}
-
 // ---------- main ----------
 const promptLabel = existsSync(corePath) ? 'core rules (~2100 words)' : 'full transcript';
 console.log(`AIL Behavior Harness v0`);
@@ -134,19 +111,37 @@ console.log(`Model: ${MODEL} | Samples/condition: ${SAMPLES} | Original: ${promp
 console.log(`Tasks: ${tasks.length}\n`);
 
 const runResults = {
+  schema_version: '0.2.0',
   meta: {
     model: MODEL,
+    sample_count: SAMPLES,
     samples: SAMPLES,
     temperature: TEMPERATURE,
     date: new Date().toISOString(),
+    source_prompt_label: promptLabel,
     original_prompt: promptLabel,
+    ail_prompt_composition: {
+      raw_ail_path: ailPath,
+      resolved_imports: resolvedAil.resolved_imports,
+      uses_runtime_header: true,
+      runtime_header_words: wordCount(AIL_HEADER),
+      raw_ail_words: wordCount(resolvedAil.raw),
+      runtime_ail_words: wordCount(ailPrompt),
+    },
   },
-  word_counts: {
-    original: originalPrompt.split(/\s+/).length,
-    ail: ailPrompt.split(/\s+/).length,
+  counts: {
+    original_words: wordCount(originalPrompt),
+    ail_words: wordCount(ailPrompt),
+    original_tokens: null,
+    ail_tokens: null,
+    compression_words_percent: null,
+    compression_tokens_percent: null,
   },
   tasks: {},
 };
+
+runResults.counts.compression_words_percent =
+  Number(((1 - runResults.counts.ail_words / runResults.counts.original_words) * 100).toFixed(1));
 
 for (const task of tasks) {
   process.stdout.write(`\n[${task.id}] (${task.type})\n  orig: `);
@@ -167,7 +162,7 @@ for (const task of tasks) {
     console.log(`  ↳ ORIG[0]: ${origOutputs[0].slice(0, 220).replace(/\n/g, ' ')}`);
     console.log(`  ↳  AIL[0]: ${ailOutputs[0].slice(0, 220).replace(/\n/g, ' ')}`);
     for (const s of ailScores.filter(s => s.pass_rate < 0.5)) {
-      console.log(`  ✗ AIL failed: ${s.label} (pass_rate=${s.pass_rate})`);
+      console.log(`  ✗ AIL failed: ${s.id || s.label} (pass_rate=${s.pass_rate})`);
     }
   }
 
@@ -190,7 +185,7 @@ console.log('\n═════════════════════�
 console.log(`Original:    ${origPass}/${ids.length} tasks pass`);
 console.log(`AIL:         ${ailPass}/${ids.length} tasks pass`);
 console.log(`Equivalent:  ${equiv}/${ids.length} same result`);
-console.log(`Words:       original=${runResults.word_counts.original}  ail=${runResults.word_counts.ail}  compression=${((1 - runResults.word_counts.ail / runResults.word_counts.original) * 100).toFixed(1)}%`);
+console.log(`Words:       original=${runResults.counts.original_words}  ail=${runResults.counts.ail_words}  compression=${runResults.counts.compression_words_percent}%`);
 
 runResults.summary = { orig_pass: origPass, ail_pass: ailPass, equiv, total: ids.length };
 
