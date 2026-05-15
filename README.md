@@ -1,3 +1,5 @@
+> **This repository is archived.** Development stopped in May 2026. The experiment produced one useful finding — see [FINDINGS.md](FINDINGS.md). The spec, examples, and harness are left here as reference.
+
 # AIL
 
 <p align="center">
@@ -22,6 +24,8 @@
   <a href="examples">Examples</a>
   ·
   <a href="benchmarks/system-prompt-leaks.md">Benchmarks</a>
+  ·
+  <a href="FINDINGS.md">Findings</a>
 </p>
 
 ---
